@@ -22,9 +22,11 @@
     
 #ifdef DEBUG
     LEANPLUM_USE_ADVERTISING_ID;
-    [Leanplum setAppId:@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244" withDevelopmentKey:@"dev_8qxMZ2VrbGxSGyhamPzBIue3dRh8Jxi9RsgNKCJU6u0"];
+    [Leanplum setAppId:@"app_c9vWZ3Ri2chxGwSNY2nkBP9aYQtp3ahcyuIG88EMAwI"
+    withDevelopmentKey:@"dev_2VyG6r5lSk08WTT5r1vFE3AwC1PWUwIZYRdVWjGkuLo"];
 #else
-    [Leanplum setAppId:@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244" withProductionKey:@"prod_D7DeHNf8Aao756DvD9B66PQqUDNRHKnJZ3lxsd4zpSA"];
+    [Leanplum setAppId:@"app_c9vWZ3Ri2chxGwSNY2nkBP9aYQtp3ahcyuIG88EMAwI"
+     withProductionKey:@"prod_domhhYmhXmE0WPsin6Af5IpfnWud2yFcTQ3E4z9YFOo"];
 #endif
     
     [LPMessageTemplates sharedTemplates];

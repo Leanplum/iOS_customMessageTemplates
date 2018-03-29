@@ -315,11 +315,12 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                              [self alertDismissedWithButtonIndex:0];
                          }];
                          [alert addAction:maybe];
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                          //// MJRJR - call the custom method to POST to LP
                          NSDictionary *messageData = [Leanplum messageMetadata];
                          NSLog(@"%@", messageData[[context messageId]]);
-                         NSDictionary *data = @{@"appId":@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244",
-                                                @"clientKey":@"dev_8qxMZ2VrbGxSGyhamPzBIue3dRh8Jxi9RsgNKCJU6u0",
+                         NSDictionary *data = @{@"appId":@"app_c9vWZ3Ri2chxGwSNY2nkBP9aYQtp3ahcyuIG88EMAwI",
+                                                @"clientKey":@"dev_2VyG6r5lSk08WTT5r1vFE3AwC1PWUwIZYRdVWjGkuLo",
                                                 @"apiVersion":@"1.0.6",
                                                 @"userId":@"mrawlings89",
                                                 @"devMode":@"true",
@@ -338,6 +339,7 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                                    NSLog(@"%ld", (long)code);
                                }];
                          ////end of Mike's Stuff
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                          [[LPMessageTemplatesClass visibleViewController]
                           presentViewController:alert animated:YES completion:nil];
                  
