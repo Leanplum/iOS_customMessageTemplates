@@ -6,15 +6,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iOS_customMessageTemplates/LPMessageTemplates.m"
-            timestampString = "544036120.885203"
+            timestampString = "544048903.717031"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
             landmarkName = "-defineActions"
             landmarkType = "7">
          </BreakpointContent>

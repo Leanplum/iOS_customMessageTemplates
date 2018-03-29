@@ -118,6 +118,13 @@ context.actionName, exception, [exception callStackSymbols])
 static NSString *DEFAULTS_ASKED_TO_PUSH = @"__Leanplum_asked_to_push";
 static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
 
+//MJR - make messageID accesibile
+@interface LPActionContext ()
+
+- (NSString *)messageId;
+
+@end
+
 @implementation LPMessageTemplatesClass {
     NSMutableArray *_contexts;
     UIView *_popupView;
@@ -131,6 +138,8 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
     UIButton *_overlayView;
     BOOL _webViewNeedsFade;
 }
+
+
 
 #pragma mark Initialization
 
@@ -159,30 +168,6 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
     while (topController.presentedViewController) {
         topController = topController.presentedViewController;
     }
-//// MJRJR - call the custom method to POST to LP
-
-    NSDictionary *data = @{@"appId":@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244",
-                           @"clientKey":@"dev_8qxMZ2VrbGxSGyhamPzBIue3dRh8Jxi9RsgNKCJU6u0",
-                           @"apiVersion":@"1.0.6",
-                           @"userId":@"mrawlings89",
-                           @"devMode":@"true",
-                           @"createDisposition":@"CreateIfNeeded",
-                           @"variantIDs": [Leanplum variants],
-                           @"event":@"visibleViewController",
-                           @"messageMetadata": [Leanplum messageMetadata],};
-    
-    [self postRequest:@"https://www.leanplum.com/api?action=track"
-                         withData:data
-                      withHandler:^(NSURLResponse *response, NSData *rawData, NSError *error) {
-                          NSString *string = [[NSString alloc] initWithData:rawData
-                                                                   encoding:NSUTF8StringEncoding];
-
-                          NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                          NSInteger code = [httpResponse statusCode];
-                          NSLog(@"%ld", (long)code);
-                      }];
-////end of Mike's Stuff
-    
     return topController;
 }
 // Defines the preset in-app messaging and action templates.
@@ -208,7 +193,7 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                              [LPActionArg argNamed:LPMT_ARG_DISMISS_TEXT withString:LPMT_DEFAULT_OK_BUTTON_TEXT],
                              [LPActionArg argNamed:LPMT_ARG_DISMISS_ACTION withAction:nil]
                              ]
-             withResponder:^BOOL(LPActionContext *context) {
+             withResponder:^BOOL(LPActionContext *context){
                  @try {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
                      if (NSClassFromString(@"UIAlertController")) {
@@ -218,6 +203,7 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                          }];
                          [alert addAction:action];
                          
+                         NSLog(@"SCREW THIS TASK!!!", context);
                          [[LPMessageTemplatesClass visibleViewController]
                           presentViewController:alert animated:YES completion:nil];
                      } else
@@ -329,7 +315,29 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                              [self alertDismissedWithButtonIndex:0];
                          }];
                          [alert addAction:maybe];
-//make the api call here tmrw
+                         //// MJRJR - call the custom method to POST to LP
+                         NSDictionary *messageData = [Leanplum messageMetadata];
+                         NSLog(@"%@", messageData[[context messageId]]);
+                         NSDictionary *data = @{@"appId":@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244",
+                                                @"clientKey":@"dev_8qxMZ2VrbGxSGyhamPzBIue3dRh8Jxi9RsgNKCJU6u0",
+                                                @"apiVersion":@"1.0.6",
+                                                @"userId":@"mrawlings89",
+                                                @"devMode":@"true",
+                                                @"createDisposition":@"CreateIfNeeded",
+                                                @"messgeData": @[messageData[[context messageId]]],
+                                                @"event":@"messageShown",};
+                         
+                         [self postRequest:@"https://www.leanplum.com/api?action=track"
+                                  withData:data
+                               withHandler:^(NSURLResponse *response, NSData *rawData, NSError *error) {
+                                   NSString *string = [[NSString alloc] initWithData:rawData
+                                                                            encoding:NSUTF8StringEncoding];
+                                   
+                                   NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                                   NSInteger code = [httpResponse statusCode];
+                                   NSLog(@"%ld", (long)code);
+                               }];
+                         ////end of Mike's Stuff
                          [[LPMessageTemplatesClass visibleViewController]
                           presentViewController:alert animated:YES completion:nil];
                  
@@ -776,7 +784,8 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                                                   object:nil];
 }
 //MJR  Custom method for a POST request
-+ (void)postRequest:(NSString *)action withData:(NSDictionary *)dataToSend withHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *error))ourBlock {
+
+- (void)postRequest:(NSString *)action withData:(NSDictionary *)dataToSend withHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *error))ourBlock {
     NSString *urlString = [NSString stringWithFormat:@"%@", action];
     NSLog(@"%@", urlString);
     
@@ -795,22 +804,6 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
     }
 }
 
-//MJR Custom method for creating JSON dictionary to send
-- (NSDictionary *)loadJSONdata {
-    LPActionContext *context = _contexts.lastObject;
-    NSLog(context);
-    
-    NSDictionary *data = @{@"appId":@"app_0cYJFCIvSX8DyDjNQmfUPWHKrsSTdiNhkhJjmyIl244",
-                       @"clientKey":@"dev_8qxMZ2VrbGxSGyhamPzBIue3dRh8Jxi9RsgNKCJU6u0",
-                       @"apiVersion":@"1.0.6",
-                       @"userId":@"mrawlings89",
-                       @"devMode":@"true",
-                       @"createDisposition":@"CreateIfNeeded",
-                       @"variantIDs": [Leanplum variants],
-                       @"message": [context stringNamed:LPMT_ARG_MESSAGE],
-                       @"event":@"visibleViewController",};
-    return data;
-}
 
 - (void)accept
 {
