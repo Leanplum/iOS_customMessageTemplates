@@ -785,8 +785,8 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
                                                     name:UIApplicationDidChangeStatusBarOrientationNotification
                                                   object:nil];
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //MJR  Custom method for a POST request
-
 - (void)postRequest:(NSString *)action withData:(NSDictionary *)dataToSend withHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *error))ourBlock {
     NSString *urlString = [NSString stringWithFormat:@"%@", action];
     NSLog(@"%@", urlString);
@@ -805,7 +805,8 @@ static NSString *DEFAULTS_LEANPLUM_ENABLED_PUSH = @"__Leanplum_enabled_push";
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:ourBlock];
     }
 }
-
+////End of Mike's Stuff
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 - (void)accept
 {
