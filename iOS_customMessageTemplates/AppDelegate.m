@@ -29,7 +29,7 @@
      withProductionKey:@"prod_domhhYmhXmE0WPsin6Af5IpfnWud2yFcTQ3E4z9YFOo"];
 #endif
     
-    [LPMessageTemplates sharedTemplates];
+    [LPMessageTemplatesClass sharedTemplates];
 
   
     [Leanplum start];

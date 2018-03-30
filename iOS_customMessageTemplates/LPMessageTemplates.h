@@ -1,9 +1,7 @@
 //
 //  LPMessageTemplates.h
-//  Leanplum
 //
-//  Created by Andrew First on 9/12/13.
-//  Copyright 2013 Leanplum, Inc.
+//  Copyright 2016 Leanplum, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,20 +29,11 @@
 // That's it!
 
 #import <Foundation/Foundation.h>
-
-#ifdef LPStaticLibrary
-#import "Leanplum.h"
-#else
 #import <Leanplum/Leanplum.h>
-#endif
-
-#ifndef LPMessageTemplatesClass
-#define LPMessageTemplatesClass LPMessageTemplates
-#endif
 
 @interface LPMessageTemplatesClass : NSObject
 #if LP_NOT_TV
-    <UIAlertViewDelegate, UIWebViewDelegate>
+<UIAlertViewDelegate, UIWebViewDelegate>
 #endif
 
 + (LPMessageTemplatesClass *)sharedTemplates;
